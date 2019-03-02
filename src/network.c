@@ -1,8 +1,7 @@
-/*
- * Network will mostly handle sockets
+/* Network will mostly handle sockets
  * It will create socket based on Host IP adress and given port
- * Basic workflow: Create socket -> bind to Addr/Port -> listen, so:
- * In code:        getaddrinfo() -> socket() -> bind() -> listen()
+ * Basic workflow: Create socket -> bind to Addr/Port -> listen
+ * In code: getaddrinfo() -> socket() -> bind() -> listen()
  *
  * Reference: https://beej.us/guide/bgnet/html/single/bgnet.html
  */
@@ -74,7 +73,9 @@ int init_socket(struct addrinfo *results)
     for (p = results; p != NULL; p = p->ai_next) {
         // Create a candidate socket
         socketfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-        if (socketfd == -1) continue;
+        if (socketfd == -1) {
+            continue;
+        }
 
         // Check if address is already in use
         if (setsockopt(socketfd, SOL_SOCKET, SO_REUSEADDR, &reuse_port, sizeof reuse_port) == -1) {
