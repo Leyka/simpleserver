@@ -3,25 +3,38 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include "network.h"
+#include "request.h"
 
 #define PORT "3000"
 
 // Check and respond to incoming connections
-void main_loop(int listener_sockfd)
+void serve(int listener_sockfd)
 {
-    int main_sockfd;
+    int new_sockfd;
     struct sockaddr_storage client_addr;
     socklen_t addr_size;
 
     while (1) {
         addr_size = sizeof client_addr;
-        main_sockfd = accept(listener_sockfd, (struct sockaddr *) &client_addr, &addr_size);
-        if (main_sockfd == -1) {
+        new_sockfd = accept(listener_sockfd, (struct sockaddr *) &client_addr, &addr_size);
+
+        // Someone is connected
+        // Analyse request
+        Request* req = create_request(new_sockfd);
+        if (req == NULL) {
+            fprintf(stderr, "Cannot create request");
+            clear_request(new_sockfd, req);
             continue;
         }
 
-        // Someone is connected.
-        puts("Gotcha.");
+        printf("Got request! %s %s %s\n", req->method, req->path, req->protocol);
+
+        // TODO
+        // Look for existing routes
+        // If exists, send response (or map route to a function and call it?)
+        // If not, send 404
+
+        clear_request(new_sockfd, req);
     }
 }
 
@@ -33,6 +46,5 @@ int main()
     }
 
     printf("Listening on port %s ...\n", PORT);
-
-    main_loop(listener_sockfd);
+    serve(listener_sockfd);
 }

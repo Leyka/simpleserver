@@ -1,2 +1,2 @@
 # simpleserver
-Simple HTTP server written in C
+Simple (POSIX) HTTP server written in C
