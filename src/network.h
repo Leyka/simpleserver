@@ -1,6 +1,7 @@
 #ifndef WEBSERVER_NETWORK_H
 #define WEBSERVER_NETWORK_H
 
+#include <netdb.h>
 #define NB_CONNECTIONS_ALLOWED 5
 
 int setup_addrinfo(char* port, struct addrinfo **results);

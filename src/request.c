@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/socket.h>
+
 #include "request.h"
 
 // Handle HTTP/1.1 Request
@@ -14,7 +15,6 @@ Request* create_request(int sockfd)
 
     // Analyze first request line
     sscanf(request, "%s %s %s", req->method, req->path, req->protocol);
-
     return req;
 }
 
