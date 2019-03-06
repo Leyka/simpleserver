@@ -1,12 +1,9 @@
 #ifndef WEBSERVER_ROUTING_TABLE_H
 #define WEBSERVER_ROUTING_TABLE_H
 
-#include "request.h"
-#include "response.h"
+#include "types.h"
 
-#define RT_DEFAULT_SIZE 30; // Bigger than needed, to reduce collisions effect
-
-typedef void (*http_func_t)(Request*, Response*); // TODO: consider moving this type away
+#define RT_DEFAULT_SIZE 31 // Prime, bigger than needed, to reduce collisions effect
 
 typedef struct RT_Item {
     char *key;
@@ -15,7 +12,8 @@ typedef struct RT_Item {
 
 typedef struct RoutingTable {
     RT_Item** items;
-    int size;
+    int base_size;
+    int size; // always a prime number size based on base_size
     int count;
 } RoutingTable;
 
