@@ -10,8 +10,8 @@ void callback(Request *req, Response *res)
 
 void register_my_routes()
 {
-    register_route("GET", "/", &callback);
-    register_route("POST", "/", &callback);
+    register_route(GET, "/", &callback);
+    register_route(POST, "/", &callback);
 }
 
 // Example of server using simpleserver

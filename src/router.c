@@ -1,5 +1,4 @@
-#include <string.h>
-
+#include <stdlib.h>
 #include "router.h"
 #include "routing_table.h"
 #include "types.h"
@@ -13,23 +12,23 @@ void router_init()
     routes_post = rt_init();
 }
 
-void router_register(char *method, char *path, http_func_t func)
+void router_register(HTTP_Method method, char *path, http_func_t func)
 {
-    if (strcmp(method, "GET") == 0) {
+    if (method == GET) {
         rt_insert(routes_get, path, func);
     }
-    else if (strcmp(method, "POST") == 0) {
+    else if (method == POST) {
         rt_insert(routes_post, path, func);
     }
 }
 
-http_func_t router_get_func(char *method, char *path)
+http_func_t router_get_func(HTTP_Method method, char *path)
 {
-    if (strcmp(method, "GET") == 0) {
+    if (method == GET) {
         return rt_search(routes_get, path);
     }
 
-    if (strcmp(method, "POST") == 0) {
+    if (method == POST) {
         return rt_search(routes_post, path);
     }
 

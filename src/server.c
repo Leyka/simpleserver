@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <string.h>
 
 #include "server.h"
 #include "network.h"
@@ -39,7 +40,7 @@ static void free_server_resources()
     router_free();
 }
 
-void register_route(char *method, char *path, http_func_t func)
+void register_route(HTTP_Method method, char *path, http_func_t func)
 {
     router_register(method, path, func);
 }
@@ -57,10 +58,13 @@ static void handle_request()
         return;
     }
 
+    // Cast method in enum type
+    HTTP_Method method = GET;
+    if (strcmp(req->method, "POST") == 0) method = POST;
+
     // Execute function according to route
-    http_func_t func_to_execute = router_get_func(req->method, req->path);
+    http_func_t func_to_execute = router_get_func(method, req->path);
     if (func_to_execute == NULL) {
-        // 404
         printf("// 404 NOT FOUND\n");
     } else {
         (*func_to_execute)(req, NULL);
