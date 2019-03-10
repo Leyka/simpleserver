@@ -6,7 +6,7 @@
 typedef struct request
 {
     char method[6]; // GET, POST, PUT, DELETE
-    char path[64]; // /path/to/route
+    char path[120]; // /path/to/route
     char protocol[8]; // HTTP/1.1
 } Request;
 

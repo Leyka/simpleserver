@@ -5,7 +5,7 @@
 
 void callback(Request *req, Response *res)
 {
-    printf("%s from %s \n", req->method, req->path);
+    send_html(res, "HELLO");
 }
 
 void register_my_routes()

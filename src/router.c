@@ -14,25 +14,28 @@ void router_init()
 
 void router_register(HTTP_Method method, char *path, http_func_t func)
 {
-    if (method == GET) {
-        rt_insert(routes_get, path, func);
-    }
-    else if (method == POST) {
-        rt_insert(routes_post, path, func);
+    switch (method) {
+        case GET:
+            rt_insert(routes_get, path, func);
+            break;
+        case POST:
+            rt_insert(routes_post, path, func);
+            break;
+        default:
+            break;
     }
 }
 
 http_func_t router_get_func(HTTP_Method method, char *path)
 {
-    if (method == GET) {
-        return rt_search(routes_get, path);
+    switch (method) {
+        case GET:
+            return rt_search(routes_get, path);
+        case POST:
+            return rt_search(routes_post, path);
+        default:
+            return NULL;
     }
-
-    if (method == POST) {
-        return rt_search(routes_post, path);
-    }
-
-    return NULL;
 }
 
 void router_free()

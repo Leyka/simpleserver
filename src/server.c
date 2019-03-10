@@ -6,6 +6,7 @@
 #include "server.h"
 #include "network.h"
 #include "request.h"
+#include "response.h"
 #include "router.h"
 
 volatile int keep_running = 1;
@@ -58,6 +59,9 @@ static void handle_request()
         return;
     }
 
+    // Create response
+    Response* res = create_response(new_sockfd);
+
     // Cast method in enum type
     HTTP_Method method = GET;
     if (strcmp(req->method, "POST") == 0) method = POST;
@@ -65,13 +69,15 @@ static void handle_request()
     // Execute function according to route
     http_func_t func_to_execute = router_get_func(method, req->path);
     if (func_to_execute == NULL) {
-        printf("// 404 NOT FOUND\n");
+        send_404(res);
     } else {
-        (*func_to_execute)(req, NULL);
+        (*func_to_execute)(req, res);
     }
 
+    free_response(res);
     clear_request(new_sockfd, req);
 }
+
 void serve_forever()
 {
     while (keep_running) {

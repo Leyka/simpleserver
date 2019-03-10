@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/socket.h>
 
 #include "request.h"
@@ -14,6 +15,7 @@ Request* create_request(int sockfd)
     Request *req = (Request*) malloc(sizeof(Request));
 
     // Analyze first request line
+    printf("%s\n", request);
     sscanf(request, "%s %s %s", req->method, req->path, req->protocol);
     return req;
 }
