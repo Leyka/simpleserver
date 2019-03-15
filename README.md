@@ -2,7 +2,7 @@
 Simple (POSIX) HTTP server written in C
 
 ## TODO
-* [ ] Implement response
+* [x] Implement response
 * [ ] Caching
 * [ ] 1 thread per request ?
 * [ ] Test SIGINT
